@@ -1,0 +1,24 @@
+<section class="hero">
+  <h2>Compra juegos al <span>mejor precio</span></h2>
+  <p>⬡ Claves digitales instantáneas ⬡</p>
+</section>
+
+<section class="games">
+  @for (game of filteredGames; track game.id) {
+    <app-game-card
+      [game]="game"
+      [isAdmin]="authService.isAdmin()"
+      (addToCart)="onAddToCart($event)"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)">
+    </app-game-card>
+  }
+</section>
+
+@if (showForm) {
+  <app-game-form
+    [gameToEdit]="gameToEdit"
+    (formClosed)="onFormClosed()"
+    (gameSaved)="onFormClosed()">
+  </app-game-form>
+}

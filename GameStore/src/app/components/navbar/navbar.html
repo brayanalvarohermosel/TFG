@@ -1,0 +1,18 @@
+<header>
+  <h1>🎮 GameKeys</h1>
+  <nav>
+    @for (p of platforms; track p) {
+      <a href="#" [class.active]="activePlatform === p" (click)="filter(p); $event.preventDefault()">{{ p }}</a>
+    }
+  </nav>
+  <div class="user">
+    @if (isAdmin) {
+      <button class="btn-add" (click)="addGame.emit()">➕ Añadir juego</button>
+    }
+    <span class="username">{{ username }}</span>
+    <button class="btn-carrito" (click)="openCarrito.emit()">
+      🛒 @if (cartCount > 0) { <span class="badge">{{ cartCount }}</span> }
+    </button>
+    <button class="logout" (click)="logout.emit()">Cerrar sesión</button>
+  </div>
+</header>

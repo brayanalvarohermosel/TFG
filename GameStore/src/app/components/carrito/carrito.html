@@ -1,0 +1,43 @@
+<div class="overlay" (click)="closed.emit()">
+  <div class="carrito-panel" (click)="$event.stopPropagation()">
+
+    <div class="carrito-header">
+      <h2>🛒 Carrito</h2>
+      <button class="btn-close" (click)="closed.emit()">✕</button>
+    </div>
+
+    @if (carritoService.getItems().length === 0) {
+      <div class="empty">
+        <p>Tu carrito está vacío</p>
+      </div>
+    } @else {
+      <div class="items">
+        @for (item of carritoService.getItems(); track item.game.id) {
+          <div class="item">
+            <img [src]="item.game.image" [alt]="item.game.name">
+            <div class="item-info">
+              <h4>{{ item.game.name }}</h4>
+              <span>{{ item.game.platform }}</span>
+              <p class="item-price">{{ item.game.price }}€</p>
+            </div>
+            <div class="item-controls">
+              <button (click)="carritoService.decreaseQuantity(item.game.id!)">−</button>
+              <span>{{ item.quantity }}</span>
+              <button (click)="carritoService.addGame(item.game)">+</button>
+              <button class="btn-remove" (click)="carritoService.removeGame(item.game.id!)">🗑</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="carrito-footer">
+        <div class="total">
+          <span>Total</span>
+          <span class="total-price">{{ carritoService.getTotal().toFixed(2) }}€</span>
+        </div>
+        <button class="btn-comprar" (click)="onComprar()">Comprar ahora</button>
+      </div>
+    }
+
+  </div>
+</div>

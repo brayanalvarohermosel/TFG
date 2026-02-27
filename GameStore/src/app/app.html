@@ -1,0 +1,32 @@
+@if (!authService.isLoggedIn()) {
+  <app-login></app-login>
+}
+
+<app-navbar
+  [isAdmin]="authService.isAdmin()"
+  [username]="authService.getUser()?.username || ''"
+  [cartCount]="carritoService.getCount()"
+  (logout)="logout()"
+  (addGame)="onAddGame()"
+  (openCarrito)="showCarrito = true">
+</app-navbar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+@if (showForm) {
+  <app-game-form
+    [gameToEdit]="gameToEdit"
+    (formClosed)="onFormClosed()"
+    (gameSaved)="onFormClosed()">
+  </app-game-form>
+}
+
+@if (showCarrito) {
+  <app-carrito (closed)="showCarrito = false"></app-carrito>
+}
+
+<footer>
+  <p>© 2026 GameKeys Store</p>
+</footer>

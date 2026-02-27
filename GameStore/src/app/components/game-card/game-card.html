@@ -1,0 +1,23 @@
+<div class="card" [class]="'card ' + getPlatformClass()">
+  <div class="card-image" (click)="goToDetail()">
+    <img [src]="game.image" [alt]="game.name">
+    <span class="discount-badge">-{{ getDiscount() }}%</span>
+  </div>
+
+  <div class="card-body">
+    <h3 (click)="goToDetail()">{{ game.name }}</h3>
+    <span class="platform">{{ game.platform }}</span>
+
+    <div class="price-row">
+      <span class="old">{{ game.oldPrice }}€</span>
+      <span class="price">{{ game.price }}€</span>
+    </div>
+
+    <div class="actions">
+      @if (isAdmin) {
+        <button class="btn-edit" (click)="onEdit()">✏️ Editar</button>
+        <button class="btn-delete" (click)="onDelete()">🗑️ Eliminar</button>
+      }
+    </div>
+  </div>
+</div>

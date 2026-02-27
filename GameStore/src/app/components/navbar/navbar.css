@@ -1,0 +1,137 @@
+header {
+  background: #0a0a0a;
+  padding: 14px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #c9a84c33;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  color: #c9a84c;
+  letter-spacing: 3px;
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+}
+
+nav a {
+  color: #888;
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+nav a:hover {
+  color: white;
+  background: #1a1a1a;
+}
+
+nav a.active {
+  color: #c9a84c;
+  border-bottom: 2px solid #c9a84c;
+  background: #1a1a1a;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  color: #c9a84c;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.btn-add {
+  background: #c9a84c;
+  border: none;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  background: #e0bb5f;
+  box-shadow: 0 4px 15px #c9a84c44;
+}
+
+.btn-carrito {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #888;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.btn-carrito:hover {
+  border-color: #c9a84c;
+  color: #c9a84c;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #c9a84c;
+  color: #000;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout {
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+}

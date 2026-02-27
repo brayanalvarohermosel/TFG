@@ -1,0 +1,16 @@
+main {
+  min-height: calc(100vh - 55px);
+  background: #111111;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  background: #0a0a0a;
+  border-top: 1px solid #c9a84c22;
+  color: #333;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}

@@ -1,0 +1,47 @@
+@if (game) {
+  <div class="detail-page">
+    <button class="btn-back" (click)="goBack()">← Volver</button>
+
+    <div class="detail-container">
+      <div class="detail-image">
+        <img [src]="game.image" [alt]="game.name">
+        <span class="discount-badge">-{{ getDiscount() }}%</span>
+      </div>
+
+      <div class="detail-info">
+        <span class="platform-tag">{{ game.platform }}</span>
+        <h1>{{ game.name }}</h1>
+
+        <div class="description">
+          <h3>Descripción</h3>
+          <p>Disfruta de {{ game.name }} en {{ game.platform }}. Consigue tu clave digital al instante y empieza a jugar hoy mismo al mejor precio del mercado.</p>
+        </div>
+
+        <div class="price-section">
+          <span class="old-price">{{ game.oldPrice }}€</span>
+          <span class="current-price">{{ game.price }}€</span>
+          <span class="save">Ahorras {{ (game.oldPrice - game.price).toFixed(2) }}€</span>
+        </div>
+
+        <button class="btn-cart" (click)="onAddToCart()">🛒 Añadir al carrito</button>
+
+        <div class="features">
+          <div class="feature">
+            <span class="icon">⚡</span>
+            <span>Entrega instantánea</span>
+          </div>
+          <div class="feature">
+            <span class="icon">🔒</span>
+            <span>Pago seguro</span>
+          </div>
+          <div class="feature">
+            <span class="icon">🎮</span>
+            <span>Clave digital oficial</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="loading">Cargando...</div>
+}

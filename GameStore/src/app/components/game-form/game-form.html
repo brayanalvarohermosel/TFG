@@ -1,0 +1,33 @@
+<div class="overlay">
+  <div class="form-container">
+    <h2>{{ isEditing ? '✏️ Editar juego' : '➕ Añadir juego' }}</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="game.name" name="name" required>
+
+      <label>Plataforma</label>
+      <select [(ngModel)]="game.platform" name="platform" required>
+        @for (p of platforms; track p) {
+          <option [value]="p">{{ p }}</option>
+        }
+      </select>
+
+      <label>Precio anterior (€)</label>
+      <input type="number" [(ngModel)]="game.oldPrice" name="oldPrice" required>
+
+      <label>Precio actual (€)</label>
+      <input type="number" [(ngModel)]="game.price" name="price" required>
+
+      <label>URL de imagen</label>
+      <input type="text" [(ngModel)]="game.image" name="image">
+
+      <div class="buttons">
+        <button type="submit" class="btn-save">
+          {{ isEditing ? 'Guardar cambios' : 'Añadir juego' }}
+        </button>
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
