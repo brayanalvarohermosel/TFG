@@ -1,3 +1,4 @@
+/** Represents a game sold on the platform. */
 export interface Game {
   id?: string;
   name: string;

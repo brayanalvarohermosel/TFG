@@ -1,0 +1,50 @@
+<section class="orders-page">
+  <h2>Mis pedidos</h2>
+
+  @if (loading) {
+    @for (i of [1,2,3]; track i) {
+      <div class="order-card skeleton">
+        <div class="order-header">
+          <div class="skeleton-line w-40"></div>
+          <div class="skeleton-line w-20"></div>
+        </div>
+        <div class="order-item">
+          <div class="skeleton-img"></div>
+          <div class="item-info">
+            <div class="skeleton-line w-60"></div>
+            <div class="skeleton-line w-80"></div>
+          </div>
+        </div>
+      </div>
+    }
+  } @else if (orders.length === 0) {
+    <div class="empty">
+      <p>Aún no tienes pedidos</p>
+      <a routerLink="/" class="btn-back">Ir a la tienda</a>
+    </div>
+  } @else {
+    @for (order of orders; track order.id) {
+      <div class="order-card">
+        <div class="order-header">
+          <span class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="order-total">{{ order.total.toFixed(2) }}€</span>
+        </div>
+
+        <div class="order-items">
+          @for (item of order.items; track $index) {
+            <div class="order-item">
+              <img [src]="item.image" [alt]="item.title">
+              <div class="item-info">
+                <h4>{{ item.title }}</h4>
+                <div class="code-box">
+                  <code>{{ item.code }}</code>
+                  <button class="btn-copy" (click)="copyCode(item.code)">Copiar</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+</section>

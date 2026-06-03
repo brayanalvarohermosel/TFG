@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CarritoService } from '../../services/carrito';
-import { Carrito } from '../../models/carrito.model';
 
 @Component({
   selector: 'app-carrito',
@@ -10,12 +9,12 @@ import { Carrito } from '../../models/carrito.model';
 })
 export class CarritoComponent {
   @Output() closed = new EventEmitter<void>();
+  /** Emits the total amount when the user clicks "Comprar". */
+  @Output() comprar = new EventEmitter<number>();
 
   constructor(public carritoService: CarritoService){}
 
   onComprar(){
-    alert('Compra realizada con éxito');
-    this.carritoService.clear();
-    this.closed.emit();
+    this.comprar.emit(this.carritoService.getTotal());
   }
 }

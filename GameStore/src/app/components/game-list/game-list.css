@@ -1,7 +1,9 @@
 .hero {
   text-align: center;
   padding: 60px;
-  background: #0a0a0a;
+  background: radial-gradient(ellipse at 30% 50%, #7c3aed11 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 50%, #c9a84c0d 0%, transparent 60%),
+              #0a0a0f;
   border-bottom: 1px solid #c9a84c22;
   position: relative;
   overflow: hidden;
@@ -12,6 +14,12 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at center, #c9a84c0d 0%, transparent 70%);
+  animation: heroGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 .hero h2 {
@@ -42,12 +50,50 @@
 .games {
   width: 100%;
   box-sizing: border-box;
-  padding: 30px 40px;
+  padding: 40px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  background: #111111;
+  background: transparent;
 }
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+}
+
+.skeleton-img {
+  height: 180px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.w-80 { width: 80%; }
+.w-60 { width: 60%; }
+.w-40 { width: 40%; }
 
 @media (max-width: 1400px) {
   .games { grid-template-columns: repeat(4, 1fr); }

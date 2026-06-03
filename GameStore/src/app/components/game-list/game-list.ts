@@ -1,34 +1,26 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game';
+import { CarritoService } from '../../services/carrito';
 import { GameCardComponent } from '../game-card/game-card';
 import { AuthService } from '../../services/auth';
-import { GameFormComponent } from '../game-form/game-form';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-game-list',
   standalone: true,
-  imports: [GameCardComponent, GameFormComponent],
+  imports: [GameCardComponent],
   templateUrl: './game-list.html',
   styleUrl: './game-list.css',
 })
 export class GameListComponent implements OnInit {
-  @Output() edit = new EventEmitter<Game>();
-  @Output() addToCart = new EventEmitter<Game>();
-
   filter: string = 'Todos';
+  searchTerm: string = '';
   games: Game[] = [];
   filteredGames: Game[] = [];
-  showForm: boolean = false;
-  gameToEdit: Game | null = null;
+  loading = true;
+
+  private carritoService = inject(CarritoService);
 
   constructor(
     private gameService: GameService,
@@ -36,55 +28,64 @@ export class GameListComponent implements OnInit {
     public authService: AuthService,
   ) {}
 
-  onFormClosed() {
-    this.showForm = false;
-    this.gameToEdit = null;
-    this.loadGames();
-    this.cdr.detectChanges();
-    setTimeout(() => this.loadGames(), 800);
-  }
-
   ngOnInit() {
-    this.gameService.currentFilter.subscribe((filter) => {
+    /** Watches filter changes AND search input simultaneously, then re-filters. */
+    combineLatest([
+      this.gameService.currentFilter,
+      this.gameService.searchTerm,
+    ]).subscribe(([filter, searchTerm]) => {
       this.filter = filter;
+      this.searchTerm = searchTerm;
       this.applyFilter();
       this.cdr.detectChanges();
     });
 
-    this.gameService.openForm.subscribe(() => {
-      this.gameToEdit = null;
-      this.showForm = true;
-      this.cdr.detectChanges();
-    });
+    /** Reloads when a game is created/edited by the admin. */
+    this.gameService.gamesChanged.subscribe(() => this.loadGames());
 
     this.loadGames();
   }
 
   loadGames() {
+    this.loading = true;
     this.gameService.getGames().subscribe((data) => {
       this.games = data;
       this.applyFilter();
+      this.loading = false;
       this.cdr.detectChanges();
     });
   }
 
+  /** Filters by platform and/or search term, applied client-side for instant feedback. */
   applyFilter() {
-    if (this.filter === 'Todos') {
-      this.filteredGames = this.games;
-    } else if (this.filter === 'PlayStation') {
-      this.filteredGames = this.games.filter((g) => g.platform.includes('PS'));
-    } else {
-      this.filteredGames = this.games.filter((g) => g.platform.includes(this.filter));
+    let result = this.games;
+
+    if (this.filter !== 'Todos') {
+      if (this.filter === 'PlayStation') {
+        result = result.filter((g) => g.platform.includes('PS'));
+      } else {
+        result = result.filter((g) => g.platform.includes(this.filter));
+      }
     }
+
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(
+        (g) =>
+          g.name.toLowerCase().includes(term) ||
+          g.platform.toLowerCase().includes(term)
+      );
+    }
+
+    this.filteredGames = result;
   }
 
   onAddToCart(game: Game) {
-    this.addToCart.emit(game);
+    this.carritoService.addGame(game);
   }
 
   onEdit(game: Game) {
-    this.gameToEdit = game;
-    this.showForm = true;
+    this.gameService.openForm.next(game);
   }
 
   onDelete(game: Game) {

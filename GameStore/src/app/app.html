@@ -4,7 +4,6 @@
 
 <app-navbar
   [isAdmin]="authService.isAdmin()"
-  [username]="authService.getUser()?.username || ''"
   [cartCount]="carritoService.getCount()"
   (logout)="logout()"
   (addGame)="onAddGame()"
@@ -24,7 +23,49 @@
 }
 
 @if (showCarrito) {
-  <app-carrito (closed)="showCarrito = false"></app-carrito>
+  <app-carrito 
+    (closed)="showCarrito = false" 
+    (comprar)="onOpenPayment($event)">
+  </app-carrito>
+}
+
+@if (showPayment) {
+  <app-payment
+    [total]="paymentTotal"
+    (paymentSuccess)="onPaymentSuccess()"
+    (closed)="onPaymentClosed()">
+  </app-payment>
+}
+
+@if (showSuccess) {
+  <div class="success-overlay" (click)="onSuccessClosed()">
+    <div class="success-modal" (click)="$event.stopPropagation()">
+      <div class="success-header">
+        <div class="check-icon">✓</div>
+        <h2>¡Pago exitoso!</h2>
+        <p>Tus códigos de activación</p>
+      </div>
+
+      <div class="success-items">
+        @for (item of successItems; track $index) {
+          <div class="success-item">
+            <img [src]="item.image" [alt]="item.name">
+            <div class="success-item-info">
+              <h4>{{ item.name }}</h4>
+              <div class="success-code-box">
+                <code>{{ item.code }}</code>
+                <button class="btn-copy" (click)="copyCode(item.code)">Copiar</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="success-total">Total: {{ successTotal.toFixed(2) }}€</div>
+
+      <button class="btn-continue" (click)="onSuccessClosed()">Volver a la tienda</button>
+    </div>
+  </div>
 }
 
 <footer>

@@ -10,7 +10,9 @@
 }
 
 .form-container {
-  background: #1a1a1a;
+  background: rgba(26, 26, 36, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid #c9a84c33;
   padding: 40px;
   border-radius: 8px;

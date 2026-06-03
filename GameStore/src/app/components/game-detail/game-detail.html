@@ -1,10 +1,23 @@
-@if (game) {
+@if (loading) {
+  <div class="detail-loading">
+    <div class="skeleton-back"></div>
+    <div class="skeleton-detail">
+      <div class="skeleton-img-big"></div>
+      <div class="skeleton-info">
+        <div class="skeleton-line w-30"></div>
+        <div class="skeleton-line w-80"></div>
+        <div class="skeleton-line w-50"></div>
+        <div class="skeleton-line w-40"></div>
+      </div>
+    </div>
+  </div>
+} @else if (game) {
   <div class="detail-page">
     <button class="btn-back" (click)="goBack()">← Volver</button>
 
     <div class="detail-container">
       <div class="detail-image">
-        <img [src]="game.image" [alt]="game.name">
+        <img [src]="game.image" [alt]="game.name" (error)="game.image = 'https://placehold.co/600x400/1a1a1a/444?text=Game'">
         <span class="discount-badge">-{{ getDiscount() }}%</span>
       </div>
 
@@ -20,10 +33,14 @@
         <div class="price-section">
           <span class="old-price">{{ game.oldPrice }}€</span>
           <span class="current-price">{{ game.price }}€</span>
-          <span class="save">Ahorras {{ (game.oldPrice - game.price).toFixed(2) }}€</span>
+          @if (game.oldPrice > game.price) {
+            <span class="save">Ahorras {{ (game.oldPrice - game.price).toFixed(2) }}€</span>
+          }
         </div>
 
-        <button class="btn-cart" (click)="onAddToCart()">🛒 Añadir al carrito</button>
+        <button class="btn-cart" [class.added]="addedToCart" (click)="onAddToCart()">
+          {{ addedToCart ? '✓ Añadido' : 'Añadir al carrito' }}
+        </button>
 
         <div class="features">
           <div class="feature">
@@ -43,5 +60,8 @@
     </div>
   </div>
 } @else {
-  <div class="loading">Cargando...</div>
+  <div class="detail-error">
+    <p>Juego no encontrado</p>
+    <button class="btn-back" (click)="goBack()">Volver</button>
+  </div>
 }

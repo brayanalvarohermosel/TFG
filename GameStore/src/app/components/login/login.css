@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: #0a0a0a;
+  background: linear-gradient(135deg, #0a0a0f, #0d0a1a);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,9 @@
 }
 
 .login-container {
-  background: #1a1a1a;
+  background: rgba(26, 26, 36, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid #c9a84c33;
   border-radius: 8px;
   padding: 50px 40px;

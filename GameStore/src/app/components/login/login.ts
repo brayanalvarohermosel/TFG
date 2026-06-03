@@ -9,16 +9,21 @@ import { AuthService } from '../../services/auth';
   styleUrl: './login.css',
 })
 export class LoginComponent {
-  username = '';
+  email = '';
   password = '';
   error = '';
+  loading = false;
 
   constructor(private authService: AuthService){}
 
-  onSubmit() {
-    const ok = this.authService.login(this.username, this.password);
+  /** Calls AuthService.login() and shows an error message on failure. */
+  async onSubmit() {
+    this.loading = true;
+    this.error = '';
+    const ok = await this.authService.login(this.email, this.password);
+    this.loading = false;
     if (!ok) {
-      this.error = 'Usuario o contraseña incorrectos';
+      this.error = 'Email o contraseña incorrectos';
     }
   }
 }

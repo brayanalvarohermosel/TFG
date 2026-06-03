@@ -22,7 +22,9 @@ export class GameCardComponent {
     this.router.navigate(['/game', this.game.id]);
   }
 
+  /** Calculates the discount percentage from oldPrice vs price. */
   getDiscount(): number {
+    if (!this.game.oldPrice || this.game.oldPrice <= 0) return 0;
     return Math.round((1 - this.game.price / this.game.oldPrice) * 100);
   }
 
@@ -38,6 +40,7 @@ export class GameCardComponent {
     this.delete.emit(this.game);
   }
 
+  /** Returns a CSS class for the platform badge icon. */
   getPlatformClass(): string {
     if (this.game.platform.includes('PC')) {
       return 'pc';

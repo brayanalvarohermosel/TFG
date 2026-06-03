@@ -1,6 +1,6 @@
 <div class="card" [class]="'card ' + getPlatformClass()">
   <div class="card-image" (click)="goToDetail()">
-    <img [src]="game.image" [alt]="game.name">
+    <img [src]="game.image" [alt]="game.name" (error)="game.image = 'https://placehold.co/300x180/1a1a1a/444?text=Game'">
     <span class="discount-badge">-{{ getDiscount() }}%</span>
   </div>
 
@@ -14,9 +14,10 @@
     </div>
 
     <div class="actions">
+      <button class="btn-cart" (click)="onAddToCart()">Añadir</button>
       @if (isAdmin) {
-        <button class="btn-edit" (click)="onEdit()">✏️ Editar</button>
-        <button class="btn-delete" (click)="onDelete()">🗑️ Eliminar</button>
+        <button class="btn-edit" (click)="onEdit()">Editar</button>
+        <button class="btn-delete" (click)="onDelete()">Eliminar</button>
       }
     </div>
   </div>

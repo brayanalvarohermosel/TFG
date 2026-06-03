@@ -1,0 +1,23 @@
+<div class="payment-overlay" (click)="onClose()">
+  <div class="payment-modal" (click)="$event.stopPropagation()">
+    <button class="payment-close" (click)="onClose()">✕</button>
+    <h2>Pago seguro</h2>
+
+    <div class="field">
+      <label>Tarjeta de crédito/débito</label>
+      <div id="card-element" class="stripe-input"></div>
+    </div>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    <button class="btn-pay" (click)="onSubmit()" [disabled]="processing">
+      @if (processing) {
+        Procesando pago...
+      } @else {
+        Pagar {{ total.toFixed(2) }}€
+      }
+    </button>
+  </div>
+</div>

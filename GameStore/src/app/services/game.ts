@@ -1,42 +1,91 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Game } from '../models/game.model';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, from, map, of } from 'rxjs';
+import { supabase } from './supabase';
 
+/**
+ * CRUD service for games with in-memory caching.
+ * After getGames() fetches all games once, getGameById() can return
+ * the cached result instantly without a second Supabase query.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  private readonly API_URl = 'https://698a05f7c04d974bc6a11fd5.mockapi.io/Juegos';
 
-  openForm = new Subject<void>();
-
-  constructor(private http: HttpClient) {}
-
+  /** Emits when the admin form should open to create/edit a game. */
+  openForm = new Subject<Game | null>();
+  /** Emits after a game is created/edited so the list auto-refreshes. */
+  gamesChanged = new Subject<void>();
+  /** Reactive filter (platform) shared with NavbarComponent. */
   currentFilter = new BehaviorSubject<string>('Todos');
+  /** Reactive search term shared with NavbarComponent. */
+  searchTerm = new BehaviorSubject<string>('');
+  /** Local cache populated by getGames(). */
+  private cachedGames: Game[] = [];
 
   setFilter(platform: string) {
     this.currentFilter.next(platform);
   }
 
+  setSearchTerm(term: string) {
+    this.searchTerm.next(term);
+  }
+
+  /** Fetches all games from Supabase and updates the local cache. */
   getGames() {
-    return this.http.get<Game[]>(this.API_URl);
+    return from(supabase.from('games').select('*')).pipe(
+      map(({data, error}) => {
+        if (error) throw error;
+        this.cachedGames = data as Game[];
+        return data as Game[];
+      })
+    );
   }
 
+  /**
+   * Returns a game by ID. If the cache is populated, returns it synchronously
+   * (via of()) to avoid an unnecessary network round-trip.
+   */
   getGameById(id: string) {
-    return this.http.get<Game>(`${this.API_URl}/${id}`);
+    const cached = this.cachedGames.find(g => g.id === id);
+    if (cached) {
+      return of(cached);
+    }
+    return from(supabase.from('games').select('*').eq('id', id).single()).pipe(
+      map(({data, error}) => {
+        if (error) throw error;
+        return data as Game;
+      })
+    );
   }
 
-  createGame(game: Game) {
-    return this.http.post<Game>(this.API_URl, game);
+  /** Creates a new game and emits gamesChanged. */
+  createGame(game: Omit<Game, 'id'>) {
+    return from(supabase.from('games').insert([game]).select().single()).pipe(
+      map(({data, error}) => {
+        if (error) throw error;
+        return data as Game;
+      })
+    );
   }
 
-  updateGame(id: string, game: Game) {
-    return this.http.put<Game>(`${this.API_URl}/${id}`, game);
+  /** Updates an existing game and emits gamesChanged. */
+  updateGame(id: string, game: Partial<Game>) {
+    return from(supabase.from('games').update(game).eq('id', id).select().single()).pipe(
+      map(({data, error}) => {
+        if (error) throw error;
+        return data as Game;
+      })
+    );
   }
 
+  /** Deletes a game by ID and emits gamesChanged. */
   deleteGame(id: string) {
-    return this.http.delete<void>(`${this.API_URl}/${id}`);
+    return from(supabase.from('games').delete().eq('id', id)).pipe(
+      map(({ error }) => {
+        if (error) throw error;
+      })
+    );
   }
 }

@@ -1,5 +1,5 @@
 .detail-page {
-  background: #111111;
+  background: linear-gradient(135deg, #0a0a0f, #0d0a1a);
   min-height: 100vh;
   padding: 30px 40px;
 }
@@ -147,7 +147,16 @@ h1 {
 
 .btn-cart:hover {
   background: #e0bb5f;
-  box-shadow: 0 4px 20px #c9a84c44;
+  box-shadow: 0 4px 20px #c9a84c44, 0 0 40px rgba(201, 168, 76, 0.15);
+}
+
+.btn-cart.added {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-cart.added:hover {
+  background: #1fc05a;
 }
 
 .features {
@@ -155,9 +164,11 @@ h1 {
   flex-direction: column;
   gap: 12px;
   padding: 20px;
-  background: #1a1a1a;
+  background: rgba(19, 19, 26, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 8px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border);
 }
 
 .feature {
@@ -178,4 +189,72 @@ h1 {
   color: #333;
   font-family: 'Orbitron', sans-serif;
   letter-spacing: 3px;
+}
+
+.detail-loading {
+  padding: 30px 40px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0f, #0d0a1a);
+}
+
+.skeleton-back {
+  width: 80px;
+  height: 34px;
+  background: #1a1a1a;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+}
+
+.skeleton-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.skeleton-img-big {
+  aspect-ratio: 3/2;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+}
+
+.skeleton-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeleton-line {
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.w-80 { width: 80%; }
+.w-50 { width: 50%; }
+.w-40 { width: 40%; }
+.w-30 { width: 30%; }
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.detail-error {
+  text-align: center;
+  padding: 100px;
+  color: #666;
+}
+
+.detail-error p {
+  font-size: 18px;
+  margin-bottom: 20px;
 }

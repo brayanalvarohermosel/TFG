@@ -1,24 +1,29 @@
 <section class="hero">
   <h2>Compra juegos al <span>mejor precio</span></h2>
-  <p>⬡ Claves digitales instantáneas ⬡</p>
+  <p>Claves digitales instantáneas</p>
 </section>
 
 <section class="games">
-  @for (game of filteredGames; track game.id) {
-    <app-game-card
-      [game]="game"
-      [isAdmin]="authService.isAdmin()"
-      (addToCart)="onAddToCart($event)"
-      (edit)="onEdit($event)"
-      (delete)="onDelete($event)">
-    </app-game-card>
+  @if (loading) {
+    @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+      <div class="skeleton">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line w-80"></div>
+          <div class="skeleton-line w-40"></div>
+          <div class="skeleton-line w-60"></div>
+        </div>
+      </div>
+    }
+  } @else {
+    @for (game of filteredGames; track game.id) {
+      <app-game-card
+        [game]="game"
+        [isAdmin]="authService.isAdmin()"
+        (addToCart)="onAddToCart($event)"
+        (edit)="onEdit($event)"
+        (delete)="onDelete($event)">
+      </app-game-card>
+    }
   }
 </section>
-
-@if (showForm) {
-  <app-game-form
-    [gameToEdit]="gameToEdit"
-    (formClosed)="onFormClosed()"
-    (gameSaved)="onFormClosed()">
-  </app-game-form>
-}
