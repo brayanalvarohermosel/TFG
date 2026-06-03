@@ -156,7 +156,7 @@ Gestiona el carrito con Signals de Angular. Métodos: `addGame()`, `removeGame()
 8. El pedido se guarda en Supabase (tabla `orders`)
 9. Se muestra overlay con códigos y botón copiar
 
-Tarjeta de prueba: `4242 4242 4242 4242`, cualquier fecha futura, cualquier CVC.
+Tarjeta de prueba: `4242 4242 4242 4242`, cualquier fecha futura, cualquier CVC, cualquier C.P (Codigo Postal).
 
 ## 📊 Modelos de Datos
 
