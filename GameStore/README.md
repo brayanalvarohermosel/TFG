@@ -195,3 +195,4 @@ interface User {
 - Catálogo limitado (juegos de ejemplo)
 - Sin notificaciones por email
 - Sin paginación en el catálogo
+- Al hacer clic en "Mis pedidos" o "Salir", puede requerir un segundo clic si la sesión no se ha restaurado completamente (el APP_INITIALIZER aún está resolviendo el perfil del usuario)

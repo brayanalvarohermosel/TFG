@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { supabase } from './supabase';
 
 /**
  * Manages authentication: login, session restore, and profile auto-creation.
  * The current user is kept in-memory (not in localStorage) for security.
+ * Uses a BehaviorSubject so components can react when the user becomes available.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUser: User | null = null;
+  private currentUser = new BehaviorSubject<User | null>(null);
+  readonly user$: Observable<User | null> = this.currentUser.asObservable();
 
   constructor() {}
 
@@ -40,7 +43,7 @@ export class AuthService {
       .maybeSingle();
 
     if (profile) {
-      this.currentUser = { id: userId, username: profile.username, role: profile.role };
+      this.currentUser.next({ id: userId, username: profile.username, role: profile.role });
     } else {
       const username = email.split('@')[0];
       const role = username === 'admin' ? 'admin' : 'cliente';
@@ -49,7 +52,7 @@ export class AuthService {
         username,
         role,
       });
-      this.currentUser = { id: userId, username, role };
+      this.currentUser.next({ id: userId, username, role });
     }
   }
 
@@ -69,18 +72,18 @@ export class AuthService {
   /** Signs out and clears the in-memory user. */
   async logout() {
     await supabase.auth.signOut();
-    this.currentUser = null;
+    this.currentUser.next(null);
   }
 
   getUser(): User | null {
-    return this.currentUser;
+    return this.currentUser.value;
   }
 
   isLoggedIn(): boolean {
-    return this.currentUser !== null;
+    return this.currentUser.value !== null;
   }
 
   isAdmin(): boolean {
-    return this.currentUser?.role === 'admin';
+    return this.currentUser.value?.role === 'admin';
   }
 }
